@@ -2,6 +2,8 @@
 
 CipherChat is a secure desktop messaging application built with Java.  
 It enables encrypted communication between users and stores messages securely in a relational database.
+<img width="1536" height="346" alt="cyberchatlogo" src="https://github.com/user-attachments/assets/e7908659-c8c3-423c-bbb2-ca8d6dc04011" />
+
 
 ## Overview
 
