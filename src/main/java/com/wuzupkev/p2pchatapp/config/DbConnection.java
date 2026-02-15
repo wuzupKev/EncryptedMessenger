@@ -20,7 +20,6 @@ public class DbConnection {
                      getClass().getClassLoader().getResourceAsStream("db.properties")) {
 
             props.load(input);
-
             dbUrl = props.getProperty("db.url");
             dbUser = props.getProperty("db.user");
             dbPassword = props.getProperty("db.password");
