@@ -1,10 +1,9 @@
 package com.wuzupkev.p2pchatapp.model.service;
-
 import com.wuzupkev.p2pchatapp.model.dao.MessageDao;
 import com.wuzupkev.p2pchatapp.model.entity.MessageEntity;
-
 import java.util.List;
 import java.util.Optional;
+
 
 public class MessageService implements MessageDao {
     @Override
