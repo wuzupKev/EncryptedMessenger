@@ -1,9 +1,12 @@
 package com.wuzupkev.p2pchatapp.model.service;
 
+import com.mysql.cj.log.Log;
 import com.wuzupkev.p2pchatapp.config.DbConnection;
 import com.wuzupkev.p2pchatapp.model.dao.UserDao;
 import com.wuzupkev.p2pchatapp.model.entity.UserEntity;
 
+import javax.xml.transform.Result;
+import java.security.KeyPairGenerator;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +17,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class UserService implements UserDao {
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
+    private PreparedStatement preparedStatement=null;
+    private ResultSet r=null;
+    private KeyPairGenerator keyPairGenerator =null;
     private String CREATE_USER="INSERT INTO users (username,password,publickey) values (?,?,?)";
+    private String LIST_USER="SELECT * FROM users";
+    private String FIND_USER="SELECT * FROM users WHERE idusers=?";
 
     private DbConnection dbConnection;
 
@@ -27,10 +33,8 @@ public class UserService implements UserDao {
     @Override
     public void create(UserEntity entity) {
 
-        PreparedStatement preparedStatement = null;
-        ResultSet r = null;
-
         try {
+            keyPairGenerator= KeyPairGenerator.getInstance("RSA");
 
             preparedStatement = dbConnection.getConnection()
                     .prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);
@@ -51,11 +55,58 @@ public class UserService implements UserDao {
                 entity.setIdUser(r.getInt(1));
             }
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, e);
         }
 
         finally {
+
+            if (r != null) {
+                try {
+                    r.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Optional<UserEntity> findById(Integer id) {
+
+        try {
+
+            preparedStatement = dbConnection.getConnection()
+                    .prepareStatement(FIND_USER);
+
+            preparedStatement.setInt(1, id);
+
+            r = preparedStatement.executeQuery();
+
+            if (r.next()) {
+
+                UserEntity user = new UserEntity(
+                        r.getInt("idusers"),
+                        r.getString("username"),
+                        r.getString("publickey"),
+                        r.getString("password")
+                );
+
+                return Optional.of(user);
+            }
+
+        } catch (SQLException e) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, e);
+        } finally {
 
             if (r != null) {
                 try {
@@ -73,13 +124,9 @@ public class UserService implements UserDao {
                 }
             }
         }
-    }
 
-    @Override
-    public Optional<UserEntity> findById(Integer id) {
         return Optional.empty();
     }
-
     @Override
     public List<UserEntity> findAll() {
         return List.of();
