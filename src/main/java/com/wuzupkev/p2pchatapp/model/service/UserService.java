@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 public class UserService implements UserDao {
     private PreparedStatement preparedStatement=null;
     private ResultSet r=null;
-    private KeyPairGenerator keyPairGenerator =null;
     private String CREATE_USER="INSERT INTO users (username,password,publickey) values (?,?,?)";
     private String LIST_USER="SELECT * FROM users";
     private String FIND_USER="SELECT * FROM users WHERE idusers=?";
@@ -34,7 +33,6 @@ public class UserService implements UserDao {
     public void create(UserEntity entity) {
 
         try {
-            keyPairGenerator= KeyPairGenerator.getInstance("RSA");
 
             preparedStatement = dbConnection.getConnection()
                     .prepareStatement(CREATE_USER, Statement.RETURN_GENERATED_KEYS);
