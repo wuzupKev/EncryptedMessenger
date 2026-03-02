@@ -8,22 +8,22 @@ public class MessageEntity {
     private int conversationId;
     private String encryptedMesage;
     private String initializationVector;
-    private LocalDateTime createdAt;
+    private LocalDateTime sentat;
 
-    public MessageEntity(int idMessage, int senderId, String encryptedMesage, int conversationId, String initializationVector, LocalDateTime createdAt) {
+    public MessageEntity(int idMessage, int senderId, String encryptedMesage, int conversationId, String initializationVector, LocalDateTime sentat) {
         this.idMessage = idMessage;
         this.senderId = senderId;
         this.encryptedMesage = encryptedMesage;
         this.conversationId = conversationId;
         this.initializationVector = initializationVector;
-        this.createdAt = createdAt;
+        this.sentat = sentat;
     }
-    public MessageEntity( int senderId, String encryptedMesage, int conversationId, String initializationVector, LocalDateTime createdAt) {
+    public MessageEntity( int senderId, String encryptedMesage, int conversationId, String initializationVector, LocalDateTime sentat) {
         this.senderId = senderId;
         this.encryptedMesage = encryptedMesage;
         this.conversationId = conversationId;
         this.initializationVector = initializationVector;
-        this.createdAt = createdAt;
+        this.sentat = sentat;
     }
 
 
@@ -70,12 +70,12 @@ public class MessageEntity {
         this.initializationVector = initializationVector;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getSentat() {
+        return sentat;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setSentat(LocalDateTime sentat) {
+        this.sentat = sentat;
     }
 
 
@@ -87,7 +87,7 @@ public class MessageEntity {
                 ", conversationId=" + conversationId +
                 ", encryptedMesage='" + encryptedMesage + '\'' +
                 ", initializationVector='" + initializationVector + '\'' +
-                ", createdAt=" + createdAt +
+                ", createdAt=" + sentat +
                 '}';
     }
 }
